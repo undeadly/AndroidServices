@@ -13,19 +13,23 @@ class BoundCountingService : Service(){
 
     private val binder = CountingBinder()
 
-    var countingJob: Job? = null
+    private var countingJob: Job? = null
 
     override fun onBind(p0: Intent?): IBinder {
         return binder
     }
 
-    fun startCounting(): Job {
+    fun startCounting() {
+       countingJob = startCountingJob()
+    }
+
+    private fun startCountingJob() : Job {
         return CoroutineScope(Dispatchers.Default).launch {
-            while(countingJob?.isActive == true) {
+            while (countingJob?.isActive != false) {
                 delay(1000)
                 val newCount = (viewModel.count.value ?: 0) + 1
 
-                Log.d("CountingService", "$newCount")
+                Log.d("BndCountService", "$newCount")
                 viewModel.count.postValue(newCount)
             }
         }
