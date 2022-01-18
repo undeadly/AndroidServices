@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/cory.roy/Documents/Android/ServicesExample/app/src/main/res/layout/activity_main.xml" value="0.16458333333333333" />
+        <entry key="..\:/Users/cory.roy/Documents/Android/ServicesExample/app/src/main/res/layout/activity_main_service.xml" value="0.33125" />
+        <entry key="..\:/Users/cory.roy/Documents/Android/ServicesExample/app/src/main/res/layout/app_bar_main_service.xml" value="0.33125" />
+        <entry key="..\:/Users/cory.roy/Documents/Android/ServicesExample/app/src/main/res/layout/content_main.xml" value="0.1" />
+        <entry key="..\:/Users/cory.roy/Documents/Android/ServicesExample/app/src/main/res/layout/content_main_service.xml" value="0.3171875" />
+        <entry key="..\:/Users/cory.roy/Documents/Android/ServicesExample/app/src/main/res/layout/fragment_bound_service.xml" value="0.33125" />
+        <entry key="..\:/Users/cory.roy/Documents/Android/ServicesExample/app/src/main/res/layout/fragment_counting.xml" value="0.15670289855072464" />
+        <entry key="..\:/Users/cory.roy/Documents/Android/ServicesExample/app/src/main/res/layout/fragment_first.xml" value="0.490036231884058" />
+        <entry key="..\:/Users/cory.roy/Documents/Android/ServicesExample/app/src/main/res/layout/fragment_job_intent_service.xml" value="0.33125" />
+        <entry key="..\:/Users/cory.roy/Documents/Android/ServicesExample/app/src/main/res/layout/fragment_started_service.xml" value="0.5541666666666667" />
+        <entry key="..\:/Users/cory.roy/Documents/Android/ServicesExample/app/src/main/res/layout/nav_header_main_service.xml" value="0.33125" />
+        <entry key="..\:/Users/cory.roy/Documents/Android/ServicesExample/app/src/main/res/menu/activity_main_drawer.xml" value="0.33125" />
+        <entry key="..\:/Users/cory.roy/Documents/Android/ServicesExample/app/src/main/res/menu/drawer_menu.xml" value="0.33125" />
+        <entry key="..\:/Users/cory.roy/Documents/Android/ServicesExample/app/src/main/res/menu/menu_main.xml" value="0.33125" />
+        <entry key="..\:/Users/cory.roy/Documents/Android/ServicesExample/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.34791666666666665" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
