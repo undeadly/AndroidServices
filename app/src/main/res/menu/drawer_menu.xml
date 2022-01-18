@@ -14,9 +14,9 @@
             android:title="@string/bound" />
 
         <item
-            android:id="@+id/JobIntentFragment"
+            android:id="@+id/JobServiceFragment"
             android:icon="@android:drawable/ic_menu_agenda"
-            android:title="@string/jobIntent" />
+            android:title="@string/job" />
 
     </group>
 </menu>

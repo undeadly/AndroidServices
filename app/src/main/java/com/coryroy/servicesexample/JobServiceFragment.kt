@@ -6,14 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.coryroy.servicesexample.databinding.FragmentJobIntentServiceBinding
+import com.coryroy.servicesexample.databinding.FragmentJobServiceBinding
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class JobIntentServiceFragment : Fragment() {
+class JobServiceFragment : Fragment() {
 
-    private var _binding: FragmentJobIntentServiceBinding? = null
+    private var _binding: FragmentJobServiceBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -27,7 +27,7 @@ class JobIntentServiceFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentJobIntentServiceBinding.inflate(inflater, container, false)
+        _binding = FragmentJobServiceBinding.inflate(inflater, container, false)
 
         return binding.root
 
@@ -41,11 +41,16 @@ class JobIntentServiceFragment : Fragment() {
 
         binding.buttonStartService.setOnClickListener {
             started = if (!started) {
-                activity?.startService(Intent(activity, StartedCountingService::class.java))
+                context?.let {
+                    JobCountingService.startJob(it)
+                }
+
                 binding.buttonStartService.setText(R.string.stop_service)
                 true
             } else {
-                activity?.stopService(Intent(activity, StartedCountingService::class.java))
+                context?.let{
+                    JobCountingService.stopJob(it)
+                }
                 binding.buttonStartService.setText(R.string.start_service)
                 false
             }

@@ -18,9 +18,9 @@
         tools:layout="@layout/fragment_bound_service"/>
 
     <fragment
-        android:id="@+id/JobIntentFragment"
-        android:name="com.coryroy.servicesexample.JobIntentServiceFragment"
-        android:label="@string/job_intent_service_fragment_label"
-        tools:layout="@layout/fragment_job_intent_service"/>
+        android:id="@+id/JobServiceFragment"
+        android:name="com.coryroy.servicesexample.JobServiceFragment"
+        android:label="@string/job_service_fragment_label"
+        tools:layout="@layout/fragment_job_service"/>
 
 </navigation>
