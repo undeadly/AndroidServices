@@ -1,4 +1,4 @@
-package com.coryroy.servicesexample
+package com.coryroy.servicesexample.service
 
 import android.app.job.JobInfo
 import android.app.job.JobParameters
@@ -7,6 +7,7 @@ import android.app.job.JobService
 import android.content.ComponentName
 import android.content.Context
 import android.util.Log
+import com.coryroy.servicesexample.viewmodel.CountingViewModel
 import kotlinx.coroutines.*
 
 class JobCountingService : JobService() {
@@ -29,10 +30,10 @@ class JobCountingService : JobService() {
         return CoroutineScope(Dispatchers.Default).launch {
             while (countingJob?.isCancelled != true) {
                 delay(1000)
-                val newCount = (viewModel.count.value ?: 0) + 1
+                val newCount = (CountingViewModel.count.value ?: 0) + 1
 
                 Log.d("JobCountService", "$newCount")
-                viewModel.count.postValue(newCount)
+                CountingViewModel.count.postValue(newCount)
             }
             jobParams?.let {
                 Log.d("JobCountService", "Calling jobFinished")

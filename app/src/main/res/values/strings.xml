@@ -14,6 +14,7 @@
 
     <string name="started">Started</string>
     <string name="bound">Bound</string>
+    <string name="bound_messenger">Bound Messenger</string>
     <string name="job">Job</string>
 
     <string name="title_activity_main_service">MainServiceActivity</string>

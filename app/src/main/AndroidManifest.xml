@@ -20,9 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".StartedCountingService" />
-        <service android:name=".BoundCountingService" />
-        <service android:name=".JobCountingService" android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service android:name=".service.StartedCountingService" />
+        <service android:name=".service.BoundCountingService" />
+        <service android:name=".service.BoundMessengerCountingService" />
+        <service android:name=".service.JobCountingService" android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>

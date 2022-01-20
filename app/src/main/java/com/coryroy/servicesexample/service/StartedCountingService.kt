@@ -1,9 +1,10 @@
-package com.coryroy.servicesexample
+package com.coryroy.servicesexample.service
 
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
+import com.coryroy.servicesexample.viewmodel.CountingViewModel
 import kotlinx.coroutines.*
 
 class StartedCountingService : Service() {
@@ -26,10 +27,10 @@ class StartedCountingService : Service() {
         return CoroutineScope(Dispatchers.Default).launch {
             while(countingJob?.isActive == true) {
                 delay(1000)
-                val newCount = (viewModel.count.value ?: 0) + 1
+                val newCount = (CountingViewModel.count.value ?: 0) + 1
 
                 Log.d("CountingService", "$newCount")
-                viewModel.count.postValue(newCount)
+                CountingViewModel.count.postValue(newCount)
             }
         }
     }

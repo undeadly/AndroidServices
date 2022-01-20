@@ -7,20 +7,26 @@
 
     <fragment
         android:id="@+id/StartedServiceFragment"
-        android:name="com.coryroy.servicesexample.StartedServiceFragment"
+        android:name="com.coryroy.servicesexample.fragment.StartedServiceFragment"
         android:label="@string/started_service_fragment_label"
         tools:layout="@layout/fragment_started_service"/>
 
     <fragment
         android:id="@+id/BoundServiceFragment"
-        android:name="com.coryroy.servicesexample.BoundServiceFragment"
+        android:name="com.coryroy.servicesexample.fragment.BoundServiceFragment"
         android:label="@string/bound_service_fragment_label"
         tools:layout="@layout/fragment_bound_service"/>
 
     <fragment
         android:id="@+id/JobServiceFragment"
-        android:name="com.coryroy.servicesexample.JobServiceFragment"
+        android:name="com.coryroy.servicesexample.fragment.JobServiceFragment"
         android:label="@string/job_service_fragment_label"
         tools:layout="@layout/fragment_job_service"/>
+
+    <fragment
+        android:id="@+id/BoundMessengerServiceFragment"
+        android:name="com.coryroy.servicesexample.fragment.BoundServiceFragment"
+        android:label="@string/bound_messenger"
+        tools:layout="@layout/fragment_bound_messenger_service" />
 
 </navigation>

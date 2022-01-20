@@ -14,6 +14,11 @@
             android:title="@string/bound" />
 
         <item
+            android:id="@+id/BoundMessengerServiceFragment"
+            android:icon="@android:drawable/ic_menu_upload"
+            android:title="@string/bound_messenger" />
+
+        <item
             android:id="@+id/JobServiceFragment"
             android:icon="@android:drawable/ic_menu_agenda"
             android:title="@string/job" />

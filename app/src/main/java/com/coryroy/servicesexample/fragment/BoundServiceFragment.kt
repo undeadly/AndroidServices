@@ -1,6 +1,5 @@
-package com.coryroy.servicesexample
+package com.coryroy.servicesexample.fragment
 
-import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -12,7 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.coryroy.servicesexample.R
 import com.coryroy.servicesexample.databinding.FragmentBoundServiceBinding
+import com.coryroy.servicesexample.service.BoundCountingService
+import com.coryroy.servicesexample.service.StartedCountingService
+import com.coryroy.servicesexample.viewmodel.CountingViewModel
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.

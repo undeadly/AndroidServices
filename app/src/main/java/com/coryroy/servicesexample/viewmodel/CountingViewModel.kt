@@ -1,4 +1,4 @@
-package com.coryroy.servicesexample
+package com.coryroy.servicesexample.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
