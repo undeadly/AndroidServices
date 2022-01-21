@@ -27,6 +27,12 @@
         android:id="@+id/BoundMessengerServiceFragment"
         android:name="com.coryroy.servicesexample.fragment.BoundServiceFragment"
         android:label="@string/bound_messenger"
-        tools:layout="@layout/fragment_bound_messenger_service" />
+        tools:layout="@layout/fragment_bound_service" />
+
+    <fragment
+        android:id="@+id/BoundAidlServiceFragment"
+        android:name="com.coryroy.servicesexample.fragment.BoundAidlServiceFragment"
+        android:label="@string/bound_aidl"
+        tools:layout="@layout/fragment_bound_service" />
 
 </navigation>

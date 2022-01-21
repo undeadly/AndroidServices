@@ -23,6 +23,8 @@
         <service android:name=".service.StartedCountingService" />
         <service android:name=".service.BoundCountingService" />
         <service android:name=".service.BoundMessengerCountingService" />
+        <service android:name=".service.BoundAidlCountingService" />
+
         <service android:name=".service.JobCountingService" android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 

@@ -10,13 +10,18 @@
 
         <item
             android:id="@+id/BoundServiceFragment"
-            android:icon="@android:drawable/ic_menu_rotate"
+            android:icon="@android:drawable/ic_menu_mylocation"
             android:title="@string/bound" />
 
         <item
             android:id="@+id/BoundMessengerServiceFragment"
             android:icon="@android:drawable/ic_menu_upload"
             android:title="@string/bound_messenger" />
+
+        <item
+            android:id="@+id/BoundAidlServiceFragment"
+            android:icon="@android:drawable/ic_menu_manage"
+            android:title="@string/bound_aidl" />
 
         <item
             android:id="@+id/JobServiceFragment"
