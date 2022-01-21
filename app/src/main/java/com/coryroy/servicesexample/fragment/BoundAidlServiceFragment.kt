@@ -53,7 +53,8 @@ class BoundAidlServiceFragment : Fragment() {
     }
 
     override fun onStop() {
-        activity?.unbindService(connection)
+        if (isBound)
+            activity?.unbindService(connection)
         isBound = false
         super.onStop()
     }
