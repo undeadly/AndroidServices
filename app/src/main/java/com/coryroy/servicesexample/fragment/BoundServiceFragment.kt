@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,12 +23,12 @@ import com.coryroy.servicesexample.viewmodel.CountingViewModel
  */
 class BoundServiceFragment : Fragment() {
 
+    private val TAG = "BoundSvc"
+
     private var _binding: FragmentBoundServiceBinding? = null
     private lateinit var boundService: BoundCountingService
     private var isBound : Boolean = false
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     private var started = false
@@ -51,11 +52,9 @@ class BoundServiceFragment : Fragment() {
         super.onAttach(context)
     }
 
-    override fun onStop() {
-        if (isBound)
-            activity?.unbindService(connection)
-        isBound = false
-        super.onStop()
+    override fun onResume() {
+        super.onResume()
+        updateButton()
     }
 
     override fun onCreateView(
@@ -65,7 +64,10 @@ class BoundServiceFragment : Fragment() {
         _binding = FragmentBoundServiceBinding.inflate(inflater, container, false)
 
         return binding.root
+    }
 
+    private fun updateButton() {
+        binding.buttonStartService.text = if (started) context?.getString(R.string.stop_service) else context?.getString(R.string.start_service)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -78,27 +80,30 @@ class BoundServiceFragment : Fragment() {
             if (isBound) {
                 started = if (!started) {
                     boundService.startCounting()
-                    binding.buttonStartService.setText(R.string.stop_service)
                     true
                 } else {
                     boundService.stopCounting()
-                    binding.buttonStartService.setText(R.string.start_service)
                     false
                 }
             } else {
                 Toast.makeText(activity, "No service connection", Toast.LENGTH_LONG).show()
             }
-
+            updateButton()
         }
     }
 
-    override fun onPause() {
-        activity?.stopService(Intent(activity, StartedCountingService::class.java))
-        super.onPause()
+    override fun onDestroy() {
+        if (isBound) {
+            activity?.stopService(Intent(activity, StartedCountingService::class.java))
+            activity?.unbindService(connection)
+        }
+        isBound = false
+        super.onDestroy()
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         _binding = null
+        super.onDestroyView()
+
     }
 }

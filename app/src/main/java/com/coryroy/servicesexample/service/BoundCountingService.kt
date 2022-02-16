@@ -10,19 +10,15 @@ import kotlinx.coroutines.*
 
 class BoundCountingService : Service(){
 
-    private val viewModel = CountingViewModel
-
-    private val binder = CountingBinder()
-
     private var countingJob: Job? = null
 
-    override fun onBind(p0: Intent?): IBinder {
-        return binder
+    inner class CountingBinder : Binder() {
+        fun getService() : BoundCountingService = this@BoundCountingService
     }
 
-    fun startCounting() {
-       countingJob = startCountingJob()
-    }
+    override fun onBind(intent: Intent?) = CountingBinder()
+
+    fun startCounting() { countingJob = startCountingJob() }
 
     private fun startCountingJob() : Job {
         return CoroutineScope(Dispatchers.Default).launch {
@@ -36,16 +32,13 @@ class BoundCountingService : Service(){
         }
     }
 
-    fun stopCounting() {
-        countingJob?.cancel()
+    override fun onUnbind(intent: Intent?): Boolean {
+        stopCounting()
+        return super.onUnbind(intent)
     }
 
-    inner class CountingBinder : Binder() {
-        fun getService() : BoundCountingService = this@BoundCountingService
-    }
+    fun stopCounting() { countingJob?.cancel() }
 
-    override fun onDestroy() {
-        countingJob?.cancel()
-        super.onDestroy()
-    }
+    override fun onDestroy() { countingJob?.cancel(); super.onDestroy() }
+
 }
