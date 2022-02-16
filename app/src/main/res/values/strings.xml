@@ -19,7 +19,7 @@
 
     <string name="job">Job</string>
 
-    <string name="title_activity_main_service">MainServiceActivity</string>
+    <string name="title_activity_main_service">Services Example</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Services Example</string>
