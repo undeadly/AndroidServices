@@ -15,28 +15,29 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.coryroy.servicesexample.R
 import com.coryroy.servicesexample.databinding.FragmentBoundServiceBinding
-import com.coryroy.servicesexample.service.BoundCountingService
+import com.coryroy.servicesexample.service.BoundMessengerCountingService
 import com.coryroy.servicesexample.service.BoundMessengerCountingService.Companion.MSG_START
 import com.coryroy.servicesexample.service.BoundMessengerCountingService.Companion.MSG_STOP
 import com.coryroy.servicesexample.service.StartedCountingService
 import com.coryroy.servicesexample.viewmodel.CountingViewModel
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
 class BoundMessengerServiceFragment : Fragment() {
 
-    private var _binding: FragmentBoundServiceBinding? = null
-    private var boundService: Messenger? = null
-    private var isBound : Boolean = false
+    val TAG = "BoundMessenger"
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    private var _binding: FragmentBoundServiceBinding? = null
     private val binding get() = _binding!!
 
+    private var boundService: Messenger? = null
+    private var isBound: Boolean = false
     private var started = false
 
     private val viewModel = CountingViewModel
+
+    private fun updateButton() {
+        binding.buttonStartService.text =
+            if (started) context?.getString(R.string.stop_service) else context?.getString(R.string.start_service)
+    }
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
@@ -51,7 +52,10 @@ class BoundMessengerServiceFragment : Fragment() {
     }
 
     override fun onAttach(context: Context) {
-        Intent(context, BoundCountingService::class.java).also { intent -> context.bindService(intent, connection, Context.BIND_AUTO_CREATE) }
+        Intent(
+            context,
+            BoundMessengerCountingService::class.java
+        ).also { intent -> context.bindService(intent, connection, Context.BIND_AUTO_CREATE) }
         super.onAttach(context)
     }
 
@@ -79,21 +83,23 @@ class BoundMessengerServiceFragment : Fragment() {
         binding.viewmodel = viewModel
 
         binding.buttonStartService.setOnClickListener {
-            if (isBound) {
-                started = if (!started) {
-                    boundService?.send(Message.obtain(null, MSG_START))
-                    binding.buttonStartService.setText(R.string.stop_service)
-                    true
-                } else {
-                    boundService?.send(Message.obtain(null, MSG_STOP))
-                    binding.buttonStartService.setText(R.string.start_service)
-                    false
-                }
-            } else {
-                Toast.makeText(activity, "No service connection", Toast.LENGTH_LONG).show()
-            }
-
+            toggleButton()
         }
+    }
+
+    private fun toggleButton() {
+        if (isBound) {
+            started = if (!started) {
+                boundService?.send(Message.obtain(null, MSG_START))
+                true
+            } else {
+                boundService?.send(Message.obtain(null, MSG_STOP))
+                false
+            }
+        } else {
+            Toast.makeText(activity, "No service connection", Toast.LENGTH_LONG).show()
+        }
+        updateButton()
     }
 
     override fun onPause() {

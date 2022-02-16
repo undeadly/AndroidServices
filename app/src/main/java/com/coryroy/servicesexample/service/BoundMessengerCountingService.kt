@@ -8,27 +8,41 @@ import android.util.Log
 import com.coryroy.servicesexample.viewmodel.CountingViewModel
 import kotlinx.coroutines.*
 
-class BoundMessengerCountingService : Service(){
+class BoundMessengerCountingService : Service() {
 
     companion object {
         const val MSG_START = 1
         const val MSG_STOP = 2
-        var countingJob: Job? = null
+        const val TAG = "BoundMessengerSVC"
+    }
 
-        private fun startCounting() { countingJob = startCountingJob() }
-        private fun stopCounting() { countingJob?.cancel() }
-        private fun startCountingJob() : Job {
-            return CoroutineScope(Dispatchers.Default).launch {
-                while (countingJob?.isActive != false) {
-                    delay(1000)
-                    val newCount = (CountingViewModel.count.value ?: 0) + 1
-                    CountingViewModel.count.postValue(newCount)
-                } } } }
-    
+    var countingJob: Job? = null
+
+    private fun startCounting() {
+        countingJob = startCountingJob()
+    }
+
+    private fun stopCounting() {
+        countingJob?.cancel()
+    }
+
+    private fun startCountingJob(): Job {
+        return CoroutineScope(Dispatchers.Default).launch {
+            while (countingJob?.isActive != false) {
+                delay(1000)
+                Log.d(TAG, "counting")
+                val newCount = (CountingViewModel.count.value ?: 0) + 1
+                CountingViewModel.count.postValue(newCount)
+            }
+        }
+    }
+
     override fun onBind(intent: Intent?): IBinder = Messenger(IncomingHandler(this)).binder
 
-    internal class IncomingHandler(context: Context) : Handler(context.mainLooper) {
+    inner class IncomingHandler(context: Context) : Handler(context.mainLooper) {
         override fun handleMessage(msg: Message) {
+            Log.d(TAG, "handleMessage: $msg")
+
             when (msg.what) {
                 MSG_START -> startCounting()
                 MSG_STOP -> stopCounting()
@@ -37,5 +51,7 @@ class BoundMessengerCountingService : Service(){
         }
     }
 
-    override fun onDestroy() { countingJob?.cancel(); super.onDestroy() }
+    override fun onDestroy() {
+        countingJob?.cancel(); super.onDestroy()
+    }
 }

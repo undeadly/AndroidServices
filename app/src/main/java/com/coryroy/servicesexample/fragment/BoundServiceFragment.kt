@@ -18,18 +18,12 @@ import com.coryroy.servicesexample.service.BoundCountingService
 import com.coryroy.servicesexample.service.StartedCountingService
 import com.coryroy.servicesexample.viewmodel.CountingViewModel
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
 class BoundServiceFragment : Fragment() {
 
     private val TAG = "BoundSvc"
 
     private var _binding: FragmentBoundServiceBinding? = null
-
-
     private val binding get() = _binding!!
-
 
     private val viewModel = CountingViewModel
 
@@ -67,9 +61,7 @@ class BoundServiceFragment : Fragment() {
     }
 
     private fun updateButton() {
-        binding.buttonStartService.text =
-            if (started) context?.getString(R.string.stop_service)
-            else context?.getString(R.string.start_service)
+        binding.buttonStartService.text = if (started) context?.getString(R.string.stop_service) else context?.getString(R.string.start_service)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
