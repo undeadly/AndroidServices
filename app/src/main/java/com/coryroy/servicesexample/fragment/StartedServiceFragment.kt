@@ -57,7 +57,8 @@ class StartedServiceFragment : Fragment() {
     }
 
     override fun onPause() {
-        activity?.stopService(Intent(activity, StartedCountingService::class.java))
+        if (started)
+            activity?.stopService(Intent(activity, StartedCountingService::class.java))
         super.onPause()
     }
 

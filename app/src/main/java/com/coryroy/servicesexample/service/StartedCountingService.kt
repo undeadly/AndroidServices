@@ -9,8 +9,6 @@ import kotlinx.coroutines.*
 
 class StartedCountingService : Service() {
 
-    private val viewModel = CountingViewModel
-
     var countingJob: Job? = null
 
     override fun onBind(p0: Intent?): IBinder? {
@@ -19,7 +17,6 @@ class StartedCountingService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         countingJob = startCounting()
-
         return START_STICKY
     }
 
@@ -40,3 +37,4 @@ class StartedCountingService : Service() {
         super.onDestroy()
     }
 }
+
