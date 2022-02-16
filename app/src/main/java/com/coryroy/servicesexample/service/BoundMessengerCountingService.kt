@@ -38,6 +38,7 @@ class BoundMessengerCountingService : Service() {
     }
 
     override fun onBind(intent: Intent?): IBinder = Messenger(IncomingHandler(this)).binder
+    override fun onUnbind(intent: Intent?) : Boolean = run { stopCounting(); false }
 
     inner class IncomingHandler(context: Context) : Handler(context.mainLooper) {
         override fun handleMessage(msg: Message) {

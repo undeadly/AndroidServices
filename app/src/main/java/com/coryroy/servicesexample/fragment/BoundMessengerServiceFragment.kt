@@ -34,11 +34,6 @@ class BoundMessengerServiceFragment : Fragment() {
 
     private val viewModel = CountingViewModel
 
-    private fun updateButton() {
-        binding.buttonStartService.text =
-            if (started) context?.getString(R.string.stop_service) else context?.getString(R.string.start_service)
-    }
-
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             boundService = Messenger(service)
@@ -52,18 +47,9 @@ class BoundMessengerServiceFragment : Fragment() {
     }
 
     override fun onAttach(context: Context) {
-        Intent(
-            context,
-            BoundMessengerCountingService::class.java
-        ).also { intent -> context.bindService(intent, connection, Context.BIND_AUTO_CREATE) }
+        Intent(context, BoundMessengerCountingService::class.java)
+            .also { intent -> context.bindService(intent, connection, Context.BIND_AUTO_CREATE) }
         super.onAttach(context)
-    }
-
-    override fun onStop() {
-        if (isBound)
-            activity?.unbindService(connection)
-        isBound = false
-        super.onStop()
     }
 
     override fun onCreateView(
@@ -76,35 +62,44 @@ class BoundMessengerServiceFragment : Fragment() {
 
     }
 
+    private fun updateButton() {
+        binding.buttonStartService.text =
+            if (started) context?.getString(R.string.stop_service)
+            else context?.getString(R.string.start_service)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.lifecycleOwner = this
         binding.viewmodel = viewModel
 
+        attachButtonListener()
+    }
+
+    private fun attachButtonListener() {
         binding.buttonStartService.setOnClickListener {
-            toggleButton()
-        }
-    }
-
-    private fun toggleButton() {
-        if (isBound) {
-            started = if (!started) {
-                boundService?.send(Message.obtain(null, MSG_START))
-                true
+            if (isBound) {
+                started = if (!started) {
+                    boundService?.send(Message.obtain(null, MSG_START))
+                    true
+                } else {
+                    boundService?.send(Message.obtain(null, MSG_STOP))
+                    false
+                }
             } else {
-                boundService?.send(Message.obtain(null, MSG_STOP))
-                false
+                Toast.makeText(activity, "No service connection", Toast.LENGTH_LONG).show()
             }
-        } else {
-            Toast.makeText(activity, "No service connection", Toast.LENGTH_LONG).show()
+            updateButton()
         }
-        updateButton()
     }
 
-    override fun onPause() {
+
+    override fun onDestroy() {
         activity?.stopService(Intent(activity, StartedCountingService::class.java))
-        super.onPause()
+        if (isBound) activity?.unbindService(connection)
+        isBound = false
+        super.onDestroy()
     }
 
     override fun onDestroyView() {
