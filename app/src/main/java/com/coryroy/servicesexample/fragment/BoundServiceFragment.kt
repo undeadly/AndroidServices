@@ -26,29 +26,29 @@ class BoundServiceFragment : Fragment() {
     private val TAG = "BoundSvc"
 
     private var _binding: FragmentBoundServiceBinding? = null
-    private lateinit var boundService: BoundCountingService
-    private var isBound : Boolean = false
+
 
     private val binding get() = _binding!!
 
-    private var started = false
 
     private val viewModel = CountingViewModel
 
+    private lateinit var boundService: BoundCountingService
+    private var isBound : Boolean = false
+    private var started = false
+
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
-            val binder = service as BoundCountingService.CountingBinder
-            boundService = binder.getService()
+            boundService = (service as BoundCountingService.CountingBinder).getService()
             isBound = true
         }
 
-        override fun onServiceDisconnected(name: ComponentName?) {
-            isBound = false
-        }
+        override fun onServiceDisconnected(name: ComponentName?) { isBound = false }
     }
 
     override fun onAttach(context: Context) {
-        Intent(context, BoundCountingService::class.java).also { intent -> context.bindService(intent, connection, Context.BIND_AUTO_CREATE) }
+        Intent(context, BoundCountingService::class.java)
+            .also { intent -> context.bindService(intent, connection, Context.BIND_AUTO_CREATE) }
         super.onAttach(context)
     }
 
@@ -67,7 +67,9 @@ class BoundServiceFragment : Fragment() {
     }
 
     private fun updateButton() {
-        binding.buttonStartService.text = if (started) context?.getString(R.string.stop_service) else context?.getString(R.string.start_service)
+        binding.buttonStartService.text =
+            if (started) context?.getString(R.string.stop_service)
+            else context?.getString(R.string.start_service)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
