@@ -32,6 +32,8 @@ class BoundMessengerCountingService : Service() {
                 delay(1000)
                 Log.d(TAG, "counting")
                 val newCount = (CountingViewModel.count.value ?: 0) + 1
+                Log.d(TAG, "$newCount")
+
                 CountingViewModel.count.postValue(newCount)
             }
         }

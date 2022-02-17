@@ -12,30 +12,21 @@ import kotlinx.coroutines.*
 
 class BoundAidlCountingService : Service(){
 
-    private val binder = object : Stub() {
-        override fun startCounting() {
-            countingJob = startCountingJob()
-        }
-
-        override fun stopCounting() {
-            countingJob?.cancel()
-        }
-
-    }
-
     private var countingJob: Job? = null
 
-    override fun onBind(p0: Intent?): IBinder {
-        return binder
+    private val binder = object : ICountingAidlInterface.Stub() {
+        override fun startCounting() { countingJob = startCountingJob() }
+        override fun stopCounting() { countingJob?.cancel() }
     }
+
+    override fun onBind(intent: Intent?): IBinder =  binder
 
     private fun startCountingJob() : Job {
         return CoroutineScope(Dispatchers.Default).launch {
             while (countingJob?.isActive != false) {
                 delay(1000)
                 val newCount = (CountingViewModel.count.value ?: 0) + 1
-
-                Log.d("BndAIDLCountService", "$newCount")
+                Log.d("BndAIDLCountSVC", "$newCount")
                 CountingViewModel.count.postValue(newCount)
             }
         }

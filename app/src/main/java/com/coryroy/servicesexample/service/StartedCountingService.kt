@@ -26,7 +26,7 @@ class StartedCountingService : Service() {
                 delay(1000)
                 val newCount = (CountingViewModel.count.value ?: 0) + 1
 
-                Log.d("CountingService", "$newCount")
+                Log.d("StartedCountingSVC", "$newCount")
                 CountingViewModel.count.postValue(newCount)
             }
         }

@@ -25,16 +25,13 @@ import com.coryroy.servicesexample.viewmodel.CountingViewModel
 class BoundAidlServiceFragment : Fragment() {
 
     private var _binding: FragmentBoundServiceBinding? = null
-    private lateinit var boundService: ICountingAidlInterface
-    private var isBound : Boolean = false
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
-    private var started = false
-
     private val viewModel = CountingViewModel
+
+    private lateinit var boundService: ICountingAidlInterface
+    private var isBound : Boolean = false
+    private var started = false
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
@@ -48,15 +45,9 @@ class BoundAidlServiceFragment : Fragment() {
     }
 
     override fun onAttach(context: Context) {
-        Intent(context, BoundAidlCountingService::class.java).also { intent -> context.bindService(intent, connection, Context.BIND_AUTO_CREATE) }
+        Intent(context, BoundAidlCountingService::class.java)
+            .also { intent -> context.bindService(intent, connection, Context.BIND_AUTO_CREATE) }
         super.onAttach(context)
-    }
-
-    override fun onStop() {
-        if (isBound)
-            activity?.unbindService(connection)
-        isBound = false
-        super.onStop()
     }
 
     override fun onCreateView(
@@ -66,7 +57,12 @@ class BoundAidlServiceFragment : Fragment() {
         _binding = FragmentBoundServiceBinding.inflate(inflater, container, false)
 
         return binding.root
+    }
 
+    private fun updateButton() {
+        binding.buttonStartService.text =
+            if (started) context?.getString(R.string.stop_service)
+            else context?.getString(R.string.start_service)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -75,27 +71,32 @@ class BoundAidlServiceFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewmodel = viewModel
 
+        attachButtonListener()
+    }
+
+    private fun attachButtonListener() {
         binding.buttonStartService.setOnClickListener {
             if (isBound) {
                 started = if (!started) {
                     boundService.startCounting()
-                    binding.buttonStartService.setText(R.string.stop_service)
                     true
                 } else {
                     boundService.stopCounting()
-                    binding.buttonStartService.setText(R.string.start_service)
                     false
                 }
             } else {
                 Toast.makeText(activity, "No service connection", Toast.LENGTH_LONG).show()
             }
-
+            updateButton()
         }
     }
 
-    override fun onPause() {
+    override fun onDestroy() {
         activity?.stopService(Intent(activity, StartedCountingService::class.java))
-        super.onPause()
+        if (isBound)
+            activity?.unbindService(connection)
+        isBound = false
+        super.onDestroy()
     }
 
     override fun onDestroyView() {
