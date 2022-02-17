@@ -28,5 +28,10 @@
             android:icon="@android:drawable/ic_menu_agenda"
             android:title="@string/job" />
 
+        <item
+            android:id="@+id/StartedForegroundServiceFragment"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:title="@string/foreground" />
+
     </group>
 </menu>

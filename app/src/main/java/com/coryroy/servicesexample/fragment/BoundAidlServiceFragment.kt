@@ -59,12 +59,6 @@ class BoundAidlServiceFragment : Fragment() {
         return binding.root
     }
 
-    private fun updateButton() {
-        binding.buttonStartService.text =
-            if (started) context?.getString(R.string.stop_service)
-            else context?.getString(R.string.start_service)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -72,6 +66,12 @@ class BoundAidlServiceFragment : Fragment() {
         binding.viewmodel = viewModel
 
         attachButtonListener()
+    }
+
+    private fun updateButton() {
+        binding.buttonStartService.text =
+            if (started) context?.getString(R.string.stop_service)
+            else context?.getString(R.string.start_service)
     }
 
     private fun attachButtonListener() {

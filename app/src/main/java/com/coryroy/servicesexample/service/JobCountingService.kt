@@ -12,7 +12,26 @@ import kotlinx.coroutines.*
 
 class JobCountingService : JobService() {
 
-    private val viewModel = CountingViewModel
+    private val jobId = 77
+    private var jobParams : JobParameters? = null
+    private var countingJob: Job? = null
+    var runningJob: Int? = null
+
+    fun startJob(context: Context) {
+        val serviceComponent = ComponentName(context, JobCountingService::class.java)
+
+        val builder = JobInfo.Builder(jobId, serviceComponent)
+        builder.setMinimumLatency(10)
+        val jobScheduler =
+            context.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+        runningJob = jobScheduler.schedule(builder.build())
+    }
+
+    fun stopJob(context: Context) {
+        val jobScheduler = context.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+        Log.d("JobCountService", "Calling jobFinished")
+        jobScheduler.cancel(jobId)
+    }
 
     override fun onStartJob(params: JobParameters?): Boolean {
         countingJob = startCountingJob()
@@ -25,18 +44,14 @@ class JobCountingService : JobService() {
         return false
     }
 
-
     private fun startCountingJob(): Job {
         return CoroutineScope(Dispatchers.Default).launch {
             while (countingJob?.isCancelled != true) {
                 delay(1000)
                 val newCount = (CountingViewModel.count.value ?: 0) + 1
-
-                Log.d("JobCountService", "$newCount")
                 CountingViewModel.count.postValue(newCount)
             }
             jobParams?.let {
-                Log.d("JobCountService", "Calling jobFinished")
                 jobFinished(it, false)
             }
         }
@@ -46,28 +61,4 @@ class JobCountingService : JobService() {
         countingJob?.cancel()
         super.onDestroy()
     }
-
-    companion object {
-        private const val jobId = 77
-        private var jobParams : JobParameters? = null
-        private var countingJob: Job? = null
-        var runningJob: Int? = null
-
-        fun startJob(context: Context) {
-            val serviceComponent = ComponentName(context, JobCountingService::class.java)
-            val builder = JobInfo.Builder(jobId, serviceComponent)
-            builder.setMinimumLatency(10)
-            val jobScheduler =
-                context.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-            runningJob = jobScheduler.schedule(builder.build())
-        }
-
-        fun stopJob(context: Context) {
-            val jobScheduler =
-                context.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-            Log.d("JobCountService", "Calling jobFinished")
-            jobScheduler.cancel(jobId)
-        }
-    }
-
 }

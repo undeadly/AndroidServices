@@ -35,4 +35,10 @@
         android:label="@string/bound_aidl"
         tools:layout="@layout/fragment_bound_service" />
 
+    <fragment
+        android:id="@+id/StartedForegroundServiceFragment"
+        android:name="com.coryroy.servicesexample.fragment.StartedForegroundServiceFragment"
+        android:label="@string/foreground_service_fragment_label"
+        tools:layout="@layout/fragment_started_service"/>
+
 </navigation>

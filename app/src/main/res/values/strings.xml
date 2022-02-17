@@ -4,11 +4,15 @@
 
     <!-- Strings used for fragments for navigation -->
     <string name="started_service_fragment_label">Started Service</string>
+    <string name="foreground_service_fragment_label">Foreground Service</string>
     <string name="bound_service_fragment_label">Bound Service</string>
     <string name="job_service_fragment_label">Job Service</string>
 
     <string name="start_service">Start Service</string>
     <string name="stop_service">Stop Service</string>
+
+    <string name="start_foreground_service">Start Foreground Service</string>
+    <string name="stop_foreground_service">Stop Foreground Service</string>
 
     <string name="previous">Previous</string>
 
@@ -25,5 +29,8 @@
     <string name="nav_header_title">Android Services Example</string>
     <string name="nav_header_subtitle">Cory Roy</string>
     <string name="nav_header_desc">Navigation header</string>
+    <string name="notification_title">Counting in the background</string>
+    <string name="x_count">Count is $1%d</string>
+    <string name="foreground">Foreground</string>
 
 </resources>
