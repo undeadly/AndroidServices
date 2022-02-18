@@ -14,53 +14,52 @@ import kotlinx.coroutines.*
 
 class StartedCountingForegroundService : Service() {
 
+    var countingJob: Job? = null
+
     companion object {
+        private const val ONGOING_NOTIFICATION_ID: Int = 77
+        private const val NOTIFICATION_CHANNEL_ID = "com.coryroy.servicesexample"
         var started = false
     }
 
     private lateinit var notification: Notification
-    private val ONGOING_NOTIFICATION_ID: Int = 77
 
-    val NOTIFICATION_CHANNEL_ID = "com.coryroy.servicesexample"
-    val channelName = "Foreground Service Example"
-    val channel = NotificationChannel(
+    private val channelName = "Foreground Service Example"
+    private val channel = NotificationChannel(
         NOTIFICATION_CHANNEL_ID,
         channelName,
         NotificationManager.IMPORTANCE_DEFAULT
     )
 
-    var countingJob: Job? = null
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        started = true
 
-    override fun onBind(p0: Intent?): IBinder? {
-        return null
+        generateNotification()
+        startForeground(ONGOING_NOTIFICATION_ID, notification)
+        countingJob = startCounting()
+
+        return START_STICKY
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val pendingIntent: PendingIntent =
-            intent.let { notificationIntent ->
-                PendingIntent.getActivity(this, 0, notificationIntent, 0)
-            }
-
-        channel.lightColor = Color.BLUE
-        channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
-
-        val manager = (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)!!
-        manager.createNotificationChannel(channel)
-
+    private fun generateNotification() {
         notification = Notification.Builder(this, NOTIFICATION_CHANNEL_ID)
             .setContentTitle(getText(R.string.notification_title))
             .setContentText(getString(R.string.x_count, CountingViewModel.count.value ?: 0))
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentIntent(pendingIntent)
             .setTicker(getString(R.string.x_count, CountingViewModel.count.value ?: 0))
             .build()
+    }
 
-        startForeground(ONGOING_NOTIFICATION_ID, notification)
+    private fun addNotificationChannel() {
+        channel.lightColor = Color.BLUE
+        channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
 
-        countingJob = startCounting()
-        started = true
+        val manager = (getSystemService(NOTIFICATION_SERVICE) as NotificationManager)
+        manager.createNotificationChannel(channel)
+    }
 
-        return START_STICKY
+    override fun onStart(intent: Intent?, startId: Int) {
+        addNotificationChannel()
     }
 
     override fun stopService(name: Intent?): Boolean {
@@ -69,17 +68,21 @@ class StartedCountingForegroundService : Service() {
         return super.stopService(name)
     }
 
-
     private fun startCounting(): Job {
         return CoroutineScope(Dispatchers.Default).launch {
             while(countingJob?.isActive == true) {
                 delay(1000)
                 val newCount = (CountingViewModel.count.value ?: 0) + 1
-
-                Log.d("StartedCountingSVC", "$newCount")
                 CountingViewModel.count.postValue(newCount)
+                val manager = (getSystemService(NOTIFICATION_SERVICE) as NotificationManager)
+                generateNotification()
+                manager.notify(ONGOING_NOTIFICATION_ID, notification)
             }
         }
+    }
+
+    override fun onBind(p0: Intent?): IBinder? {
+        return null
     }
 
     override fun onDestroy() {
