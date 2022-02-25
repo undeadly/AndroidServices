@@ -11,7 +11,6 @@ import com.coryroy.servicesexample.R
 import com.coryroy.servicesexample.viewmodel.CountingViewModel
 import kotlinx.coroutines.*
 
-
 class StartedCountingForegroundService : Service() {
 
     var countingJob: Job? = null

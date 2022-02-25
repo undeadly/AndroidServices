@@ -33,5 +33,10 @@
             android:icon="@android:drawable/ic_menu_info_details"
             android:title="@string/foreground" />
 
+        <item
+            android:id="@+id/WorkFragment"
+            android:icon="@android:drawable/ic_menu_slideshow"
+            android:title="@string/work" />
+
     </group>
 </menu>

@@ -41,4 +41,10 @@
         android:label="@string/foreground_service_fragment_label"
         tools:layout="@layout/fragment_started_service"/>
 
+    <fragment
+        android:id="@+id/WorkFragment"
+        android:name="com.coryroy.servicesexample.fragment.WorkFragment"
+        android:label="@string/work_fragment_label"
+        tools:layout="@layout/fragment_work"/>
+
 </navigation>
