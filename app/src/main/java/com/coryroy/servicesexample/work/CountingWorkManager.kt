@@ -5,18 +5,13 @@ import androidx.work.*
 import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
 
-
 object CountingWorkManager {
 
     const val COUNTER_WORK_TAG = "count"
-
-    const val WORK_DATA_START_DELAY = "START_DELAY"
     const val WORK_DATA_LABEL = "LABEL"
     const val WORK_DATA_RUNNING = "RUNNING"
 
     fun startCounting(context: Context, initialDelaySeconds : Long = 0) {
-
-        //stopCounting(context)
 
         val constraints = Constraints.Builder()
             .setRequiresBatteryNotLow(true)
@@ -44,7 +39,6 @@ object CountingWorkManager {
             .then(count)
             .then(showEndNotification)
             .enqueue()
-
     }
 
     fun stopCounting(context: Context) {
